@@ -1,0 +1,47 @@
+import java.time.ZonedDateTime;
+
+public class Flat implements Comparable<Flat>{
+    private long id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+    private String name; //Поле не может быть null, Строка не может быть пустой
+    private Coordinates coordinates; //Поле не может быть null
+    private java.time.ZonedDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
+    private float area; //Значение поля должно быть больше 0
+    private Long numberOfRooms; //Максимальное значение поля: 9, Значение поля должно быть больше 0
+    private Integer price; //Поле может быть null, Значение поля должно быть больше 0
+    private View view; //Поле не может быть null
+    private Transport transport; //Поле не может быть null
+    private House house; //Поле не может быть null
+
+    private static long idCounter = 1;
+
+    public Flat(String name, Coordinates coordinates, float area, Long numberOfRooms,
+                Integer price, View view, Transport transport, House house) {
+        this.id = idCounter++;
+        this.creationDate = ZonedDateTime.now();
+        this.name = name;
+        this.coordinates = coordinates;
+        this.area = area;
+        this.numberOfRooms = numberOfRooms;
+        this.price = price;
+        this.view = view;
+        this.transport = transport;
+        this.house = house;
+    }
+    @Override
+    public int compareTo(Flat other) {
+        return Float.compare(this.area, other.area); // сортировка по площади
+    }
+    @Override
+    public String toString() {
+        return "Flat{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", area=" + area +
+                ", rooms=" + numberOfRooms +
+                ", price=" + price +
+                ", view=" + view +
+                ", transport=" + transport +
+                ", house=" + house +
+                '}';
+    }
+}
