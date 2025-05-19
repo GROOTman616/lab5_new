@@ -27,6 +27,9 @@ public class Flat implements Comparable<Flat>{
         this.transport = transport;
         this.house = house;
     }
+    public Flat(){
+
+    }
     @Override
     public int compareTo(Flat other) {
         return Float.compare(this.area, other.area); // сортировка по площади
@@ -43,5 +46,29 @@ public class Flat implements Comparable<Flat>{
                 ", transport=" + transport +
                 ", house=" + house +
                 '}';
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public Long getNumberOfRooms() {
+        return numberOfRooms;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setId(long newId) {
+        this.id = newId;
+    }
+
+    public Transport getTransport() {
+        return transport;
+    }
+
+    public void fixId() {
+        idCounter = idCounter-1;
     }
 }

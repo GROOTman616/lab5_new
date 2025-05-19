@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class FileManager {
-    public static void readFromCsv(String fileName) throws FileNotFoundException {
+    public static PriorityQueue<Flat> readFromCsv(String fileName) throws FileNotFoundException {
         PriorityQueue<Flat> flats = new PriorityQueue<>();
         FileReader fr = new FileReader(fileName);
         try {
@@ -13,11 +13,9 @@ public class FileManager {
             }
             String[] lines = wholefile.split("\n");
             for (String flatline:lines){
-                System.out.println(flatline);
                 Flat flat = converter.fromCsv(flatline);
                 flats.add(flat);
             }
-            flats.forEach(System.out::println);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -29,6 +27,7 @@ public class FileManager {
 //        } catch (IllegalArgumentException e) {
 //            System.err.println("Пропущена строка из-за ошибки: " + e.getMessage());
 //        }
+        return flats;
     }
 
 

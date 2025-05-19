@@ -11,4 +11,13 @@ public class House {
         this.numberOfFlatsOnFloor=numberOfFlatsOnFloor;
         this.numberOfLifts=numberOfLifts;
     }
+    public String toString() {
+        return "House{" +
+                "name='" + name + '\'' +
+                ", year=" + year +
+                ", number of floors=" + numberOfFloors +
+                ", number of flats on floor=" + numberOfFlatsOnFloor +
+                ", number of lifts=" + numberOfLifts +
+                '}';
+    }
 }

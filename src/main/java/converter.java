@@ -4,9 +4,6 @@ public class converter {
 
     public static Flat fromCsv(String line) throws IllegalArgumentException {
         String[] parts = line.split(",", -1);
-        for (String word:parts) {
-            System.out.println(word);
-        }
         if (parts.length < 14) throw new IllegalArgumentException("Неверный формат CSV-строки");
 
         try {
@@ -30,7 +27,6 @@ public class converter {
             House house = new House(houseName, year, floors, flatsOnFloor, lifts);
 
             Flat flat = new Flat(name, coordinates, area, numberOfRooms, price, view, transport, house);
-//            flat.setId(id); // требуется setId вручную, если автогенерация
             return flat;
 
         } catch (Exception e) {
