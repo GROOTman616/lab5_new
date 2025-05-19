@@ -20,13 +20,7 @@ public class InputHelper {
         System.out.print("Введите вид из окна: ");
         String view0 = sc.nextLine().toUpperCase();
         View view = null;
-        try {
-            view = View.valueOf(view0);
-            // Дальнейшие действия с view
-        } catch (IllegalArgumentException e) {
-            System.out.println("Ошибка: неверный вид из окна. Допустимые значения: " + Arrays.toString(View.values()));
-            System.out.print("Введите другой вид: ");
-        }
+        view = View.valueOf(view0);
         System.out.print("Введите транспорт: ");
         String transport0 = sc.nextLine();
         Transport transport = Transport.valueOf(transport0.trim());

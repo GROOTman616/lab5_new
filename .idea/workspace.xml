@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4faa096b-edc4-4c02-96af-04afbb0ddc4b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/InputHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CollectionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/CollectionManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/FileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/FileManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Flat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Flat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/House.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/House.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/converter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/converter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/playground.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/playground.java" afterDir="false" />
-    </list>
+    <list default="true" id="4faa096b-edc4-4c02-96af-04afbb0ddc4b" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
