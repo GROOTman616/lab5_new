@@ -5,4 +5,11 @@ public class Coordinates {
         this.x = x;
         this.y = y;
     }
+
+    public Long getX() {
+        return x;
+    }
+    public Long getY() {
+        return y;
+    }
 }

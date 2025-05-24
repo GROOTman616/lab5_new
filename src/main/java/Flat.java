@@ -71,4 +71,24 @@ public class Flat implements Comparable<Flat>{
     public void fixId() {
         idCounter = idCounter-1;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    public float getArea() {
+        return area;
+    }
+
+    public View getView() {
+        return view;
+    }
+
+    public House getHouse() {
+        return house;
+    }
 }

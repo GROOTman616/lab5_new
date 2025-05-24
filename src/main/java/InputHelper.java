@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -17,11 +18,11 @@ public class InputHelper {
         System.out.print("Введите цену: ");
         Integer price = sc.nextInt();
         sc.nextLine();
-        System.out.print("Введите вид из окна: ");
+        System.out.print("Введите вид из окна (Доступные значения:"+ Arrays.toString(View.values())+"): ");
         String view0 = sc.nextLine().toUpperCase();
         View view = null;
         view = View.valueOf(view0);
-        System.out.print("Введите транспорт: ");
+        System.out.print("Введите транспорт (Доступные значения:"+ Arrays.toString(Transport.values())+"): ");
         String transport0 = sc.nextLine();
         Transport transport = Transport.valueOf(transport0.trim());
         System.out.print("Введите название дома: ");

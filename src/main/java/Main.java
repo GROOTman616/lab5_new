@@ -1,13 +1,15 @@
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws IOException {
         FileManager fmanager = new FileManager();
+        PriorityQueue<Flat> flats = FileManager.readFromCsv(CollectionManager.filename);
         CollectionManager colmanager = new CollectionManager();
-        PriorityQueue<Flat> flats = fmanager.readFromCsv("C:\\Users\\rutma\\OneDrive\\Рабочий стол\\Test1.csv");
         Scanner sc = new Scanner(System.in);
         System.out.println("Здравствуйте!");
         outerLoop:
@@ -70,6 +72,12 @@ public class Main {
               break;
           case "add_if_min":
               colmanager.addIfMin(flats);
+              break;
+          case "save":
+              FileManager.writeToCsv(CollectionManager.filename, flats);
+              break;
+          case "execute":
+              colmanager.execute_script(flats, answer[1]);
               break;
           case "exit":
               break outerLoop;

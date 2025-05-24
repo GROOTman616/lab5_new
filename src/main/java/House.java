@@ -20,4 +20,24 @@ public class House {
                 ", number of lifts=" + numberOfLifts +
                 '}';
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public Long getYear() {
+        return year;
+    }
+
+    public long getNumberOfFloors() {
+        return numberOfFloors;
+    }
+
+    public Long getNumberOfFlatsOnFloor() {
+        return numberOfFlatsOnFloor;
+    }
+
+    public Long getNumberOfLifts() {
+        return numberOfLifts;
+    }
 }

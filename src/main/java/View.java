@@ -3,3 +3,4 @@ public enum View {
     PARK,
     TERRIBLE;
 }
+

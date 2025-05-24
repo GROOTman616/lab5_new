@@ -34,21 +34,21 @@ public class converter {
         }
     }
 
-//    public static String toCsv(Flat flat) {
-//        return flat.getId() + "," +
-//                flat.getName() + "," +
-//                flat.getCoordinates().getX() + "," +
-//                flat.getCoordinates().getY() + "," +
-//                flat.getArea() + "," +
-//                flat.getNumberOfRooms() + "," +
-//                (flat.getPrice() != null ? flat.getPrice() : "") + "," +
-//                flat.getView() + "," +
-//                flat.getTransport() + "," +
-//                (flat.getHouse().getName() != null ? flat.getHouse().getName() : "") + "," +
-//                flat.getHouse().getYear() + "," +
-//                flat.getHouse().getNumberOfFloors() + "," +
-//                flat.getHouse().getNumberOfFlatsOnFloor() + "," +
-//                flat.getHouse().getNumberOfLifts();
-//    }
+    public static String toCsv(Flat flat) {
+        return flat.getId() + "," +
+                flat.getName() + "," +
+                flat.getCoordinates().getX() + "," +
+                flat.getCoordinates().getY() + "," +
+                flat.getArea() + "," +
+                flat.getNumberOfRooms() + "," +
+                (flat.getPrice() != null ? flat.getPrice() : "") + "," +
+                flat.getView() + "," +
+                flat.getTransport() + "," +
+                (flat.getHouse().getName() != null ? flat.getHouse().getName() : "") + "," +
+                flat.getHouse().getYear() + "," +
+                flat.getHouse().getNumberOfFloors() + "," +
+                flat.getHouse().getNumberOfFlatsOnFloor() + "," +
+                flat.getHouse().getNumberOfLifts();
+    }
 }
 

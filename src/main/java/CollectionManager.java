@@ -1,9 +1,14 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.sql.SQLOutput;
 import java.time.ZonedDateTime;
 import java.util.*;
 
 public class CollectionManager {
-    private ZonedDateTime initTime;
+    private final ZonedDateTime initTime;
+    static String filename = "C:\\Users\\rutma\\OneDrive\\Рабочий стол\\Test1.csv";
 
     public CollectionManager() {
         this.initTime = ZonedDateTime.now();
@@ -115,6 +120,96 @@ public class CollectionManager {
         else {
             flat.fixId();
             System.out.println("Объект не подходит");
+        }
+    }
+
+    public void execute_script(PriorityQueue<Flat> flats, String filename) throws IOException {
+        try (Scanner scriptScanner = new Scanner(new File(filename))) {
+            CollectionManager colmanager = new CollectionManager();
+            while (scriptScanner.hasNextLine()) {
+                String line = scriptScanner.nextLine().trim();
+                if (line.isEmpty() || line.startsWith("#")) continue;
+
+                System.out.println("Выполняю: " + line);
+                String[] parts = line.split(" ", 2);
+                String commandName = parts[0].toLowerCase();
+                String[] commandArgs = parts.length > 1 ? parts[1].split(" ") : new String[0];
+
+                if (commandName.equals("execute_script")) {
+                    System.out.println("Ошибка: Рекурсивный вызов скриптов запрещен");
+                    continue;
+                }
+                if (commandName != null) {
+                    switch (commandName){
+                        case "help":
+                            System.out.println("СПРАВКА\n"
+                                    + "help : вывести справку по доступным командам\n"
+                                    + "info : вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)\n"
+                                    + "show : вывести в стандартный поток вывода все элементы коллекции в строковом представлении\n"
+                                    + "add {element} : добавить новый элемент в коллекцию\n"
+                                    + "update id {element} : обновить значение элемента коллекции, id которого равен заданному\n"
+                                    + "remove_by_id id : удалить элемент из коллекции по его id\n"
+                                    + "clear : очистить коллекцию\n"
+                                    + "save : сохранить коллекцию в файл\n"
+                                    + "execute_script file_name : считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.\n"
+                                    + "exit : завершить программу (без сохранения в файл)\n"
+                                    + "remove_head : вывести первый элемент коллекции и удалить его\n"
+                                    + "add_if_max {element} : добавить новый элемент в коллекцию, если его значение превышает значение наибольшего элемента этой коллекции\n"
+                                    + "add_if_min {element} : добавить новый элемент в коллекцию, если его значение меньше, чем у наименьшего элемента этой коллекции\n"
+                                    + "remove_all_by_number_of_rooms numberOfRooms : удалить из коллекции все элементы, значение поля numberOfRooms которого эквивалентно заданному\n"
+                                    + "filter_greater_than_price price : вывести элементы, значение поля price которых больше заданного\n"
+                                    + "print_field_ascending_transport : вывести значения поля transport всех элементов в порядке возрастания");
+                            break;
+                        case "info":
+                            colmanager.info(flats);
+                            break;
+                        case "show":
+                            colmanager.show(flats);
+                            break;
+                        case "add":
+                            colmanager.addFlat(flats);
+                            break;
+                        case "remove_head":
+                            colmanager.removeHead(flats);
+                            break;
+                        case "clear":
+                            colmanager.clear(flats);
+                            break;
+                        case "update":
+                            colmanager.updateID(flats, Long.parseLong(commandArgs[0]));
+                            break;
+                        case "remove_by_id":
+                            colmanager.removeID(flats, Long.parseLong(commandArgs[0]));
+                            break;
+                        case "remove_all_by_number_of rooms":
+                            colmanager.removeByNumberOfRooms(flats, Long.parseLong(commandArgs[0]));
+                            break;
+                        case "filter_greater_than_price":
+                            colmanager.priceFilter(flats, Integer.parseInt(commandArgs[0]));
+                            break;
+                        case "print_field_ascending_transport":
+                            colmanager.transportOut(flats);
+                            break;
+                        case "add_if_max":
+                            colmanager.addIfMax(flats);
+                            break;
+                        case "add_if_min":
+                            colmanager.addIfMin(flats);
+                            break;
+                        case "save":
+                            FileManager.writeToCsv(CollectionManager.filename, flats);
+                            break;
+                        case "exit":
+                            System.exit(0);
+                    }
+                } else {
+                    System.out.println("Неизвестная команда: " + commandName);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Файл скрипта не найден: " + filename);
+        } catch (Exception e) {
+            System.out.println("Ошибка выполнения скрипта: " + e.getMessage());
         }
     }
 }
