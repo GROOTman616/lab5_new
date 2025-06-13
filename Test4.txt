@@ -1,4 +1,4 @@
-show
+info
 show
 info
 remove_head

@@ -1,3 +1,8 @@
+package Managers;
+
+import Data.Flat;
+import Data.Transport;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -8,7 +13,7 @@ public class CollectionManager {
     private final ZonedDateTime initTime;
     public String filename;
     FileManager fmanager = new FileManager();
-    PriorityQueue<Flat> flats;
+    public PriorityQueue<Flat> flats;
 
     public CollectionManager(String filename) throws FileNotFoundException {
         this.filename = filename;
@@ -16,8 +21,7 @@ public class CollectionManager {
         this.flats = fmanager.readFromCsv(filename);
     }
 
-    public void addFlat() {
-        Flat flat = InputHelper.readFlat();
+    public void addFlat(Flat flat) {
         flats.add(flat);
     }
 
@@ -73,6 +77,7 @@ public class CollectionManager {
         }
         else {
             flats.remove(oldFlat);
+            System.out.println("Элемент удалён");
         }
     }
     public void removeByNumberOfRooms(Long numberOfRooms) {
@@ -103,8 +108,7 @@ public class CollectionManager {
         System.out.println(trlist);
     }
 
-    public void addIfMax() {
-        Flat flat = InputHelper.readFlat();
+    public void addIfMax(Flat flat) {
         Flat maxflat = Collections.max(flats);
         if (flat.compareTo(maxflat)>0) {
             flats.add(flat);
@@ -116,8 +120,7 @@ public class CollectionManager {
         }
     }
 
-    public void addIfMin() {
-        Flat flat = InputHelper.readFlat();
+    public void addIfMin(Flat flat) {
         Flat minflat = Collections.min(flats);
         if (flat.compareTo(minflat)<0) {
             flats.add(flat);
@@ -128,94 +131,12 @@ public class CollectionManager {
             System.out.println("Объект не подходит");
         }
     }
-    public void execute_script(String filename2) throws IOException {
-        try (Scanner scriptScanner = new Scanner(new File(filename2))) {
-            CollectionManager colmanager = new CollectionManager(filename);
-            while (scriptScanner.hasNextLine()) {
-                String line = scriptScanner.nextLine().trim();
-                if (line.isEmpty() || line.startsWith("#")) continue;
 
-                System.out.println("Выполняю: " + line);
-                String[] parts = line.split(" ", 2);
-                String commandName = parts[0].toLowerCase();
-                String[] commandArgs = parts.length > 1 ? parts[1].split(" ") : new String[0];
-
-                if ((commandName.equals("execute") && commandArgs[0].equals(filename2))) {
-                    System.out.println("Ошибка: Рекурсивный вызов скриптов запрещен");
-                    continue;
-                }
-                if (commandName != null) {
-                    switch (commandName){
-                        case "help":
-                            System.out.println("СПРАВКА\n"
-                                    + "help : вывести справку по доступным командам\n"
-                                    + "info : вывести в стандартный поток вывода информацию о коллекции (тип, дата инициализации, количество элементов и т.д.)\n"
-                                    + "show : вывести в стандартный поток вывода все элементы коллекции в строковом представлении\n"
-                                    + "add {element} : добавить новый элемент в коллекцию\n"
-                                    + "update id {element} : обновить значение элемента коллекции, id которого равен заданному\n"
-                                    + "remove_by_id id : удалить элемент из коллекции по его id\n"
-                                    + "clear : очистить коллекцию\n"
-                                    + "save : сохранить коллекцию в файл\n"
-                                    + "execute_script file_name : считать и исполнить скрипт из указанного файла. В скрипте содержатся команды в таком же виде, в котором их вводит пользователь в интерактивном режиме.\n"
-                                    + "exit : завершить программу (без сохранения в файл)\n"
-                                    + "remove_head : вывести первый элемент коллекции и удалить его\n"
-                                    + "add_if_max {element} : добавить новый элемент в коллекцию, если его значение превышает значение наибольшего элемента этой коллекции\n"
-                                    + "add_if_min {element} : добавить новый элемент в коллекцию, если его значение меньше, чем у наименьшего элемента этой коллекции\n"
-                                    + "remove_all_by_number_of_rooms numberOfRooms : удалить из коллекции все элементы, значение поля numberOfRooms которого эквивалентно заданному\n"
-                                    + "filter_greater_than_price price : вывести элементы, значение поля price которых больше заданного\n"
-                                    + "print_field_ascending_transport : вывести значения поля transport всех элементов в порядке возрастания");
-                            break;
-                        case "info":
-                            colmanager.info();
-                            break;
-                        case "show":
-                            colmanager.show();
-                            break;
-                        case "add":
-                            colmanager.addFlat();
-                            break;
-                        case "remove_head":
-                            colmanager.removeHead();
-                            break;
-                        case "clear":
-                            colmanager.clear();
-                            break;
-                        case "update":
-                            colmanager.updateID(Long.parseLong(commandArgs[0]));
-                            break;
-                        case "remove_by_id":
-                            colmanager.removeID(Long.parseLong(commandArgs[0]));
-                            break;
-                        case "remove_all_by_number_of rooms":
-                            colmanager.removeByNumberOfRooms(Long.parseLong(commandArgs[0]));
-                            break;
-                        case "filter_greater_than_price":
-                            colmanager.priceFilter(Integer.parseInt(commandArgs[0]));
-                            break;
-                        case "print_field_ascending_transport":
-                            colmanager.transportOut();
-                            break;
-                        case "add_if_max":
-                            colmanager.addIfMax();
-                            break;
-                        case "add_if_min":
-                            colmanager.addIfMin();
-                            break;
-                        case "save":
-                            FileManager.writeToCsv(colmanager.filename, flats);
-                            break;
-                        case "exit":
-                            System.exit(0);
-                    }
-                } else {
-                    System.out.println("Неизвестная команда: " + commandName);
-                }
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("Файл скрипта не найден: " + filename);
-        } catch (Exception e) {
-            System.out.println("Ошибка выполнения скрипта: " + e.getMessage());
-        }
+    public PriorityQueue<Flat> getCollection(){
+        return flats;
+    }
+    public String getFilename() {
+        return filename;
     }
 }
 

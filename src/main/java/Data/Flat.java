@@ -1,3 +1,5 @@
+package Data;
+
 import java.time.ZonedDateTime;
 
 public class Flat implements Comparable<Flat>{
@@ -36,7 +38,7 @@ public class Flat implements Comparable<Flat>{
     }
     @Override
     public String toString() {
-        return "Flat{" +
+        return "Data.Flat{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", area=" + area +
