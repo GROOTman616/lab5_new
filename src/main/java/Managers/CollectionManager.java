@@ -1,45 +1,47 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.time.ZonedDateTime;
 import java.util.*;
 
 public class CollectionManager {
     private final ZonedDateTime initTime;
-    static String filename = "C:\\Users\\rutma\\OneDrive\\Рабочий стол\\Test1.csv";
+    public String filename;
+    FileManager fmanager = new FileManager();
+    PriorityQueue<Flat> flats;
 
-    public CollectionManager() {
+    public CollectionManager(String filename) throws FileNotFoundException {
+        this.filename = filename;
         this.initTime = ZonedDateTime.now();
+        this.flats = fmanager.readFromCsv(filename);
     }
 
-    public void addFlat(PriorityQueue<Flat> flats) {
+    public void addFlat() {
         Flat flat = InputHelper.readFlat();
         flats.add(flat);
     }
 
-    public void show(PriorityQueue<Flat> flats) {
+    public void show() {
         flats.forEach(System.out::println);
     }
 
-    public void info(PriorityQueue<Flat> flats) {
+    public void info() {
         System.out.println("Тип: " + flats.getClass());
         System.out.println("Дата инициализации: " + initTime);
         System.out.println("Количество элементов: " + flats.size());
     }
 
-    public void removeHead(PriorityQueue<Flat> flats) {
+    public void removeHead() {
         Flat head = flats.poll();
         System.out.println("Удалён: " + head);
     }
 
-    public void clear(PriorityQueue<Flat> flats) {
+    public void clear() {
         flats.clear();
         System.out.println("Коллекция очищена");
     }
 
-    public void updateID(PriorityQueue<Flat> flats, long id) {
+    public void updateID(long id) {
         Flat oldFlat = null;
         for(Flat f: flats) {
             if (f.getId()==id) {
@@ -50,13 +52,15 @@ public class CollectionManager {
         if (oldFlat==null) {
             System.out.println("Элемент не найден");
         }
-        flats.remove(oldFlat);
-        Flat newFlat = InputHelper.readFlat();
-        newFlat.setId(id);
-        flats.add(newFlat);
+        else {
+            flats.remove(oldFlat);
+            Flat newFlat = InputHelper.readFlat();
+            newFlat.setId(id);
+            flats.add(newFlat);
+        }
     }
 
-    public void removeID(PriorityQueue<Flat> flats, long id) {
+    public void removeID(long id) {
         Flat oldFlat = null;
         for(Flat f: flats) {
             if (f.getId()==id) {
@@ -67,9 +71,11 @@ public class CollectionManager {
         if (oldFlat==null) {
             System.out.println("Элемент не найден");
         }
-        flats.remove(oldFlat);
+        else {
+            flats.remove(oldFlat);
+        }
     }
-    public void removeByNumberOfRooms(PriorityQueue<Flat> flats, Long numberOfRooms) {
+    public void removeByNumberOfRooms(Long numberOfRooms) {
         Iterator<Flat> iterator = flats.iterator();
         while (iterator.hasNext()) {
             Flat f = iterator.next();
@@ -79,7 +85,7 @@ public class CollectionManager {
         }
     }
 
-    public void priceFilter(PriorityQueue<Flat> flats, Integer price){
+    public void priceFilter(Integer price){
         for (Flat f: flats) {
             if (f.getPrice()>price){
                 System.out.println(f);
@@ -87,7 +93,7 @@ public class CollectionManager {
         }
     }
 
-    public void transportOut(PriorityQueue<Flat> flats) {
+    public void transportOut() {
         ArrayList<Transport> trlist = new ArrayList<>();
         for (Flat f: flats) {
             Transport tr = f.getTransport();
@@ -97,7 +103,7 @@ public class CollectionManager {
         System.out.println(trlist);
     }
 
-    public void addIfMax(PriorityQueue<Flat> flats) {
+    public void addIfMax() {
         Flat flat = InputHelper.readFlat();
         Flat maxflat = Collections.max(flats);
         if (flat.compareTo(maxflat)>0) {
@@ -110,7 +116,7 @@ public class CollectionManager {
         }
     }
 
-    public void addIfMin(PriorityQueue<Flat> flats) {
+    public void addIfMin() {
         Flat flat = InputHelper.readFlat();
         Flat minflat = Collections.min(flats);
         if (flat.compareTo(minflat)<0) {
@@ -122,10 +128,9 @@ public class CollectionManager {
             System.out.println("Объект не подходит");
         }
     }
-
-    public void execute_script(PriorityQueue<Flat> flats, String filename) throws IOException {
-        try (Scanner scriptScanner = new Scanner(new File(filename))) {
-            CollectionManager colmanager = new CollectionManager();
+    public void execute_script(String filename2) throws IOException {
+        try (Scanner scriptScanner = new Scanner(new File(filename2))) {
+            CollectionManager colmanager = new CollectionManager(filename);
             while (scriptScanner.hasNextLine()) {
                 String line = scriptScanner.nextLine().trim();
                 if (line.isEmpty() || line.startsWith("#")) continue;
@@ -135,7 +140,7 @@ public class CollectionManager {
                 String commandName = parts[0].toLowerCase();
                 String[] commandArgs = parts.length > 1 ? parts[1].split(" ") : new String[0];
 
-                if (commandName.equals("execute_script")) {
+                if ((commandName.equals("execute") && commandArgs[0].equals(filename2))) {
                     System.out.println("Ошибка: Рекурсивный вызов скриптов запрещен");
                     continue;
                 }
@@ -161,43 +166,43 @@ public class CollectionManager {
                                     + "print_field_ascending_transport : вывести значения поля transport всех элементов в порядке возрастания");
                             break;
                         case "info":
-                            colmanager.info(flats);
+                            colmanager.info();
                             break;
                         case "show":
-                            colmanager.show(flats);
+                            colmanager.show();
                             break;
                         case "add":
-                            colmanager.addFlat(flats);
+                            colmanager.addFlat();
                             break;
                         case "remove_head":
-                            colmanager.removeHead(flats);
+                            colmanager.removeHead();
                             break;
                         case "clear":
-                            colmanager.clear(flats);
+                            colmanager.clear();
                             break;
                         case "update":
-                            colmanager.updateID(flats, Long.parseLong(commandArgs[0]));
+                            colmanager.updateID(Long.parseLong(commandArgs[0]));
                             break;
                         case "remove_by_id":
-                            colmanager.removeID(flats, Long.parseLong(commandArgs[0]));
+                            colmanager.removeID(Long.parseLong(commandArgs[0]));
                             break;
                         case "remove_all_by_number_of rooms":
-                            colmanager.removeByNumberOfRooms(flats, Long.parseLong(commandArgs[0]));
+                            colmanager.removeByNumberOfRooms(Long.parseLong(commandArgs[0]));
                             break;
                         case "filter_greater_than_price":
-                            colmanager.priceFilter(flats, Integer.parseInt(commandArgs[0]));
+                            colmanager.priceFilter(Integer.parseInt(commandArgs[0]));
                             break;
                         case "print_field_ascending_transport":
-                            colmanager.transportOut(flats);
+                            colmanager.transportOut();
                             break;
                         case "add_if_max":
-                            colmanager.addIfMax(flats);
+                            colmanager.addIfMax();
                             break;
                         case "add_if_min":
-                            colmanager.addIfMin(flats);
+                            colmanager.addIfMin();
                             break;
                         case "save":
-                            FileManager.writeToCsv(CollectionManager.filename, flats);
+                            FileManager.writeToCsv(colmanager.filename, flats);
                             break;
                         case "exit":
                             System.exit(0);

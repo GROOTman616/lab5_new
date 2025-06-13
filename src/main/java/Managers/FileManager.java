@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class FileManager {
-    public static PriorityQueue<Flat> readFromCsv(String fileName) throws FileNotFoundException {
+    public PriorityQueue<Flat> readFromCsv(String fileName) throws FileNotFoundException {
         PriorityQueue<Flat> flats = new PriorityQueue<>();
         FileReader fr = new FileReader(fileName);
         try {
