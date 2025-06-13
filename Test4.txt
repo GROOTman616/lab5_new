@@ -1,0 +1,6 @@
+info
+show
+info
+remove_head
+exit
+show
