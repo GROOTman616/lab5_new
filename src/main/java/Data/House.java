@@ -1,6 +1,8 @@
 package Data;
 
-public class House {
+import java.io.Serializable;
+
+public class House implements Serializable {
     private String name; //Поле может быть null
     private Long year; //Значение поля должно быть больше 0
     private long numberOfFloors; //Значение поля должно быть больше 0

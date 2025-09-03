@@ -1,5 +1,6 @@
 package Commands;
 
+import Common.CommandResponse;
 import Managers.CollectionManager;
 
 import java.util.Scanner;
@@ -11,8 +12,9 @@ public class ShowCommand implements Command{
         this.collectionManager=collectionManager;
     }
     @Override
-    public void execute(String[] args, Scanner scanner) {
-        collectionManager.show();
+    public CommandResponse execute(Object[] args, Object data, Scanner scanner) {
+        String collection = collectionManager.show();
+        return new CommandResponse(true, collection);
     }
 
     @Override

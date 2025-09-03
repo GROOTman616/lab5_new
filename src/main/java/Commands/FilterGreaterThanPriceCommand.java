@@ -1,7 +1,11 @@
 package Commands;
 
+import Common.CommandResponse;
+import Data.Flat;
 import Managers.CollectionManager;
 
+import java.util.Comparator;
+import java.util.PriorityQueue;
 import java.util.Scanner;
 
 public class FilterGreaterThanPriceCommand implements Command{
@@ -11,22 +15,32 @@ public class FilterGreaterThanPriceCommand implements Command{
         this.collectionManager=collectionManager;
     }
     @Override
-    public void execute(String[] args, Scanner scanner) {
-        if (args.length < 2) {
-            System.out.println("Укажите цену");
-            return;
+    public CommandResponse execute(Object[] args, Object data, Scanner scanner) {
+        if (args.length < 1) {
+            String message = "Укажите цену";
+            return new CommandResponse (false, message);
         }
         try{
-            Integer price = Integer.parseInt(args[1]);
-            collectionManager.priceFilter(price);
+            Integer price = Integer.parseInt((String) args[0]);
+            PriorityQueue<Flat> flatsAnswer= collectionManager.priceFilter(price);
+            String message;
+            if (flatsAnswer.isEmpty()) {
+                message = "Квартир с такой ценой нет";
+            } else {
+                message = flatsAnswer.stream()
+                        .sorted(Comparator.comparing(Flat::getId))
+                        .map(Flat::toString)
+                        .reduce("", (a, b) -> a+b + "\n");
+            }
+            return new CommandResponse(true, message);
         } catch (NumberFormatException e) {
-            System.err.println("Неверный формат цены");
+            return new CommandResponse(false, "Неверный формат цены");
         }
     }
 
     @Override
     public String getName() {
-        return "filter_greater_than_price";
+        return "filter_greater_than_price {price}";
     }
 
     @Override

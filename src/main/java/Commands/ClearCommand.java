@@ -1,5 +1,6 @@
 package Commands;
 
+import Common.CommandResponse;
 import Managers.CollectionManager;
 
 import java.util.Scanner;
@@ -11,8 +12,9 @@ public class ClearCommand implements Command{
         this.collectionManager=collectionManager;
     }
     @Override
-    public void execute(String[] args, Scanner scanner) {
-        collectionManager.clear();
+    public CommandResponse execute(Object[] args, Object data, Scanner scanner) {
+        String result = collectionManager.clear();
+        return new CommandResponse(true, result);
     }
 
     @Override

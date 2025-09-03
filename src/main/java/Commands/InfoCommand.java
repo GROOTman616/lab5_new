@@ -1,9 +1,11 @@
 package Commands;
+import Common.CommandResponse;
 import Managers.CollectionManager;
 
+import java.io.Serializable;
 import java.util.Scanner;
 
-public class InfoCommand implements Command {
+public class InfoCommand implements Command, Serializable {
     private final CollectionManager collectionManager;
 
     public InfoCommand(CollectionManager collectionManager) {
@@ -11,8 +13,9 @@ public class InfoCommand implements Command {
     }
 
     @Override
-    public void execute(String[] args, Scanner scanner) {
-        collectionManager.info();
+    public CommandResponse execute(Object[] args, Object data, Scanner scanner) {
+        String info = collectionManager.info();
+        return new CommandResponse(true, info);
     }
 
     @Override

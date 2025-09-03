@@ -3,19 +3,18 @@ package Managers;
 import Data.Flat;
 import Data.Transport;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.*;
 
-public class CollectionManager {
+public class CollectionManager implements Serializable {
     private final ZonedDateTime initTime;
     public String filename;
     FileManager fmanager = new FileManager();
     public PriorityQueue<Flat> flats;
 
-    public CollectionManager(String filename) throws FileNotFoundException {
+    public CollectionManager(String filename) throws IOException {
         this.filename = filename;
         this.initTime = ZonedDateTime.now();
         this.flats = fmanager.readFromCsv(filename);
@@ -25,28 +24,36 @@ public class CollectionManager {
         flats.add(flat);
     }
 
-    public void show() {
-        flats.forEach(System.out::println);
+    public String show() {
+        if (flats.isEmpty()){
+            return "Коллекция пуста";
+        }
+        return flats.stream()
+                .sorted(Comparator.comparing(Flat::getId))
+                .map(Flat::toString)
+                .reduce("", (a, b) -> a+b + "\n");
     }
 
-    public void info() {
-        System.out.println("Тип: " + flats.getClass());
-        System.out.println("Дата инициализации: " + initTime);
-        System.out.println("Количество элементов: " + flats.size());
+    public String info() {
+        String info = "Тип: " + flats.getClass() + "\n" + "Дата инициализации: " + initTime + "\n" + "Количество элементов: " + flats.size();
+        return info;
     }
 
-    public void removeHead() {
+    public String removeHead() {
         Flat head = flats.poll();
-        System.out.println("Удалён: " + head);
+        String result = "Удалён: " + head;
+        return result;
     }
 
-    public void clear() {
+    public String clear() {
         flats.clear();
-        System.out.println("Коллекция очищена");
+        String result = "Коллекция очищена";
+        return result;
     }
 
-    public void updateID(long id) {
+    public String updateID(long id, Flat newFlat) {
         Flat oldFlat = null;
+        String message;
         for(Flat f: flats) {
             if (f.getId()==id) {
                 oldFlat = f;
@@ -54,17 +61,19 @@ public class CollectionManager {
             }
         }
         if (oldFlat==null) {
-            System.out.println("Элемент не найден");
+            message = "Элемент c таким id не найден";
+            return message;
         }
         else {
             flats.remove(oldFlat);
-            Flat newFlat = InputHelper.readFlat();
             newFlat.setId(id);
             flats.add(newFlat);
+            message = "Элемент обновлён";
+            return message;
         }
     }
 
-    public void removeID(long id) {
+    public String removeID(long id) {
         Flat oldFlat = null;
         for(Flat f: flats) {
             if (f.getId()==id) {
@@ -73,62 +82,77 @@ public class CollectionManager {
             }
         }
         if (oldFlat==null) {
-            System.out.println("Элемент не найден");
+            return "Элемент не найден";
         }
         else {
             flats.remove(oldFlat);
-            System.out.println("Элемент удалён");
+            return "Элемент удалён";
         }
     }
-    public void removeByNumberOfRooms(Long numberOfRooms) {
+    public String removeByNumberOfRooms(Long numberOfRooms) {
         Iterator<Flat> iterator = flats.iterator();
+        String result = "";
         while (iterator.hasNext()) {
             Flat f = iterator.next();
             if (f.getNumberOfRooms()==numberOfRooms) {
                 iterator.remove();
+                result += "Удалён: "+ f + "\n";
             }
         }
+        if (result.equals("")) {
+            return "Квартир с таким количеством комнат нет";
+        }
+        return result;
     }
 
-    public void priceFilter(Integer price){
+    public PriorityQueue<Flat> priceFilter(Integer price){
+        PriorityQueue<Flat> flatsAnswer = new PriorityQueue<>();
         for (Flat f: flats) {
             if (f.getPrice()>price){
-                System.out.println(f);
+                flatsAnswer.add(f);
             }
         }
+        return flatsAnswer;
     }
 
-    public void transportOut() {
+    public String transportOut() {
         ArrayList<Transport> trlist = new ArrayList<>();
         for (Flat f: flats) {
             Transport tr = f.getTransport();
             trlist.add(tr);
         }
         Collections.sort(trlist);
-        System.out.println(trlist);
+        String result = String.valueOf(trlist);
+        return result;
     }
 
-    public void addIfMax(Flat flat) {
+    public String addIfMax(Flat flat) {
         Flat maxflat = Collections.max(flats);
+        String result;
         if (flat.compareTo(maxflat)>0) {
             flats.add(flat);
-            System.out.println("Объект успешно добавлен");
+            result = "Объект успешно добавлен";
+            return result;
         }
         else {
             flat.fixId();
-            System.out.println("Объект не подходит");
+            result = "Объект не подходит";
+            return result;
         }
     }
 
-    public void addIfMin(Flat flat) {
+    public String addIfMin(Flat flat) {
         Flat minflat = Collections.min(flats);
+        String result;
         if (flat.compareTo(minflat)<0) {
             flats.add(flat);
-            System.out.println("Объект успешно добавлен");
+            result = "Объект успешно добавлен";
+            return result;
         }
         else {
             flat.fixId();
-            System.out.println("Объект не подходит");
+            result = "Объект не подходит";
+            return result;
         }
     }
 

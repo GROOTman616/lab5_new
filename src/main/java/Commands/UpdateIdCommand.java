@@ -1,6 +1,9 @@
 package Commands;
 
+import Common.CommandResponse;
+import Data.Flat;
 import Managers.CollectionManager;
+import Managers.InputHelper0;
 
 import java.util.Scanner;
 
@@ -11,14 +14,23 @@ public class UpdateIdCommand implements Command{
         this.collectionManager = collectionManager;
     }
     @Override
-    public void execute(String[] args, Scanner scanner) {
-        Long id = Long.parseLong(args[1]);
-        collectionManager.updateID(id);
+    public CommandResponse execute(Object[] args, Object data, Scanner scanner) {
+        if (args.length<1) {
+            return new CommandResponse(false, "Укажите id элемента");
+        }
+        try {
+            Long id = Long.parseLong((String) args[0]);
+            Flat flat = (Flat) data;
+            String result = collectionManager.updateID(id, flat);
+            return new CommandResponse(true, result);
+        } catch (NumberFormatException e){
+            return new CommandResponse(false, "Неверный формат id");
+        }
     }
 
     @Override
     public String getName() {
-        return "update";
+        return "update {id}";
     }
 
     @Override

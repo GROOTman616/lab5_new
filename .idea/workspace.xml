@@ -10,37 +10,39 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4faa096b-edc4-4c02-96af-04afbb0ddc4b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/lab5_new_jar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/META-INF/MANIFEST.MF" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Commands/AddCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Commands/AddIfMinCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Commands/ClearCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Commands/Command.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Commands/ExecuteScriptCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Commands/ExitCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Commands/FilterGreaterThanPriceCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Commands/HelpCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Commands/InfoCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Commands/PrintFieldAscendingTransportCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Commands/RemoveByNumberOfRoomsCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Commands/RemoveHeadCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Commands/RemoveIdCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Commands/SaveCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Commands/ShowCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Commands/UpdateIdCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Managers/CommandManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Client/Client.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Client/RunClient.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Common/CommandRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Common/CommandResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Server/RunServer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Server/Server.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test4.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Test4.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/CollectionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/CollectionManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Coordinates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Data/Coordinates.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/FileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/FileManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Flat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Data/Flat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/House.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Data/House.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/InputHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/InputHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/META-INF/MANIFEST.MF" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/AddCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/AddCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/AddIfMaxCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/AddIfMaxCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/AddIfMinCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/AddIfMinCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/ClearCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/ClearCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/Command.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/Command.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/ExecuteScriptCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/ExecuteScriptCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/ExitCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/ExitCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/FilterGreaterThanPriceCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/FilterGreaterThanPriceCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/HelpCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/HelpCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/InfoCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/InfoCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/PrintFieldAscendingTransportCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/PrintFieldAscendingTransportCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/RemoveByNumberOfRoomsCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/RemoveByNumberOfRoomsCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/RemoveHeadCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/RemoveHeadCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/RemoveIdCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/RemoveIdCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/SaveCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/SaveCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/ShowCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/ShowCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/UpdateIdCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/UpdateIdCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Data/Coordinates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Data/Coordinates.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Data/Flat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Data/Flat.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Data/House.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Data/House.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Transport.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Data/Transport.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/View.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Data/View.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/converter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/converter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Managers/CollectionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/CollectionManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Managers/CommandManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/CommandManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Managers/FileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/FileManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Managers/InputHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/InputHelper0.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/playground.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/playground.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -53,6 +55,7 @@
       <list>
         <option value="Enum" />
         <option value="Interface" />
+        <option value="package-info" />
         <option value="Class" />
       </list>
     </option>
@@ -83,22 +86,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Application.playground.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;#1 on dev&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/79312/IdeaProjects/lab5_new/src/main/java/org/example/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.javacompiler&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.ClientTest.executor": "Run",
+    "Application.Main.executor": "Run",
+    "Application.RunClient.executor": "Run",
+    "Application.RunServer.executor": "Run",
+    "Application.Server.executor": "Run",
+    "Application.ServerTest.executor": "Run",
+    "Application.playground.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "#1 on dev",
+    "kotlin-language-version-configured": "true",
+    "onboarding.tips.debug.path": "C:/Users/79312/IdeaProjects/lab5_new/src/main/java/org/example/Main.java",
+    "project.structure.last.edited": "Artifacts",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.javacompiler"
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

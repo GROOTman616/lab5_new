@@ -1,16 +1,18 @@
 package Managers;
 
 import Data.*;
+
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Scanner;
 
 /**
  * Класс для обработки пользовательского ввода с валидацией
  */
-public class InputHelper {
+public class InputHelper0 implements Serializable {
     private final Scanner scanner;
 
-    public InputHelper(Scanner scanner) {
+    public InputHelper0(Scanner scanner) {
         this.scanner = scanner;
     }
 

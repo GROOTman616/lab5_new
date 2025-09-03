@@ -1,5 +1,6 @@
 package Commands;
 
+import Common.CommandResponse;
 import Managers.CollectionManager;
 
 import java.util.Scanner;
@@ -11,22 +12,23 @@ public class RemoveByNumberOfRoomsCommand implements Command{
         this.collectionManager=collectionManager;
     }
     @Override
-    public void execute(String[] args, Scanner scanner) {
-        if (args.length<2){
-            System.out.println("Укажите число комнат");
-            return;
+    public CommandResponse execute(Object[] args, Object data, Scanner scanner) {
+        if (args.length<1){
+            String message = "Укажите число комнат";
+            return new CommandResponse(false, message);
         }
         try {
-            Long rooms = Long.parseLong(args[1]);
-            collectionManager.removeByNumberOfRooms(rooms);
+            Long rooms = Long.parseLong((String) args[0]);
+            String result = collectionManager.removeByNumberOfRooms(rooms);
+            return new CommandResponse(true, result);
         } catch (NumberFormatException e){
-            System.err.println("Неверный формат числа комнат");
+            return new CommandResponse(false, "Неверный формат числа комнат");
         }
     }
 
     @Override
     public String getName() {
-        return "remove_all_by_number_of_rooms";
+        return "remove_all_by_number_of_rooms {number}";
     }
 
     @Override

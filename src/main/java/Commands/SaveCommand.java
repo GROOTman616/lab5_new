@@ -1,5 +1,6 @@
 package Commands;
 
+import Common.CommandResponse;
 import Managers.CollectionManager;
 import Managers.FileManager;
 
@@ -13,13 +14,14 @@ public class SaveCommand implements Command{
         this.collectionManager=collectionManager;
     }
     @Override
-    public void execute(String[] args, Scanner scanner) throws IOException {
+    public CommandResponse execute(Object[] args, Object data, Scanner scanner) throws IOException {
         try {
             FileManager.writeToCsv(collectionManager.getFilename(), collectionManager.getCollection());
             System.out.println("Коллекция сохранена");
         } catch (Exception e) {
             System.err.println("Ошибка при сохранении коллекции: "+e.getMessage());
         }
+        return null;
     }
 
     @Override
