@@ -2,7 +2,6 @@ package Client;
 
 import Common.CommandRequest;
 import Common.CommandResponse;
-import Managers.CollectionManager;
 import Managers.CommandManager;
 import Managers.InputHelper0;
 
@@ -17,6 +16,7 @@ public class Client {
     InputHelper0 inputHelper0 = new InputHelper0(scanner);
     CommandManager commandManager = new CommandManager();
     int port;
+    private ByteBuffer buffer = ByteBuffer.allocate(8);
 
     public Client(int port) throws IOException {
         this.port = port;
@@ -140,11 +140,19 @@ public class Client {
         lengthBuffer.flip();
         int length = lengthBuffer.getInt();
 
-        ByteBuffer dataBuffer = ByteBuffer.allocate(length);
-        while (dataBuffer.hasRemaining()) {
-            if (channel.read(dataBuffer) == -1) throw new EOFException("Сервер закрыл соединение");
+        if(buffer.capacity() < length) {
+            buffer = ByteBuffer.allocate(length);
+        } else {
+            buffer.clear();
         }
-        byte[] data = dataBuffer.array();
+
+        buffer.limit(length);
+        while (buffer.hasRemaining()) {
+            if (channel.read(buffer) == -1) throw new EOFException("Сервер закрыл соединение");
+        }
+        byte[] data = new byte[length];
+        buffer.flip();
+        buffer.get(data);
 
         try (ObjectInputStream objIn = new ObjectInputStream(new ByteArrayInputStream(data))) {
             CommandResponse response = (CommandResponse) objIn.readObject();

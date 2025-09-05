@@ -19,7 +19,6 @@ public class Server {
     private final Scanner sc = new Scanner(System.in);
     private final CollectionManager collectionManager;
     private final CommandManager commandManager;
-    //хардкод убрать
 
     public Server(int port, String filename) throws IOException {
         this.filename = filename;
