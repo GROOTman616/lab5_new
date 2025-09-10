@@ -9,7 +9,9 @@ import java.io.*;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Client {
     Scanner scanner = new Scanner(System.in);
@@ -17,6 +19,7 @@ public class Client {
     CommandManager commandManager = new CommandManager();
     int port;
     private ByteBuffer buffer = ByteBuffer.allocate(8);
+    private final Set<String> activeScripts = new HashSet<>();
 
     public Client(int port) throws IOException {
         this.port = port;
@@ -41,6 +44,10 @@ public class Client {
                     System.arraycopy(parts, 1, commandArgs, 0, commandArgs.length);
 
                     try {
+                        if (commandName.equals("exit")) {
+                            System.out.println("Завершение программы . . .");
+                            System.exit(0);
+                        }
                         if (commandName.equals("execute_script")) {
                             execute_script(commandArgs[0], socketChannel);
                         } else {
@@ -57,9 +64,6 @@ public class Client {
                             System.out.println("\n--- Ответ сервера ---");
                             System.out.println(response.getMessage());
                             System.out.println("----------------------\n");
-                            if (commandName.equals("exit")) {
-                                System.exit(0);
-                            }
                         }
                     } catch (Exception e) {
                         System.out.println("Ошибка при отправке команды: " + e.getMessage());
@@ -76,42 +80,60 @@ public class Client {
         }
     }
 
-    public void execute_script(String filename, SocketChannel socketChannel){
-        StringBuilder result = new StringBuilder();
-        try {
-            Scanner scriptscanner = new Scanner(new File(filename));
+    public void execute_script(String filename, SocketChannel socketChannel) {
+        if (activeScripts.contains(filename)) {
+            System.out.println("Ошибка: рекурсивный вызов скрипта " + filename + " запрещён.");
+            return;
+        }
+
+        File file = new File(filename);
+        if (!file.exists() || !file.isFile()) {
+            System.out.println("Ошибка: файл " + filename + " не найден.");
+            return;
+        }
+
+        try (Scanner scriptscanner = new Scanner(file)) {
+            activeScripts.add(filename);
             while (scriptscanner.hasNextLine()) {
                 String line = scriptscanner.nextLine().trim();
                 if (line.isEmpty() || line.startsWith("#")) continue;
-                result.append(line).append("\n");
-            }
-            String result1 = result.toString();
-            String[] lines = result1.split("\n");
-            for (String line : lines) {
+
                 String[] parts = line.split(" ");
                 String commandName = parts[0];
                 String[] commandArgs = new String[parts.length - 1];
                 System.arraycopy(parts, 1, commandArgs, 0, commandArgs.length);
-                CommandRequest request;
-                if (commandManager.getCommandsWithFlat().containsKey(commandName)) {
-                    Object flat = inputHelper0.readFlat();
-                    request = new CommandRequest(commandName, commandArgs, flat);
-                } else {
-                    request = new CommandRequest(commandName, commandArgs, null);
-                }
-                sendRequest(socketChannel, request);
 
-                CommandResponse response = readResponse(socketChannel);
-                System.out.println("\n--- Ответ сервера ---");
-                System.out.println(response.getMessage());
-                System.out.println("----------------------\n");
+                if (commandName.equals("execute_script")) {
+                    if (commandArgs.length == 0) {
+                        System.out.println("Ошибка: не указан файл для execute_script");
+                        continue;
+                    }
+                    execute_script(commandArgs[0], socketChannel);
+                } else {
+                    try {
+                        CommandRequest request;
+                        if (commandManager.getCommandsWithFlat().containsKey(commandName)) {
+                            Object flat = inputHelper0.readFlat();
+                            request = new CommandRequest(commandName, commandArgs, flat);
+                        } else {
+                            request = new CommandRequest(commandName, commandArgs, null);
+                        }
+
+                        sendRequest(socketChannel, request);
+                        CommandResponse response = readResponse(socketChannel);
+
+                        System.out.println("\n--- Ответ сервера ---");
+                        System.out.println(response.getMessage());
+                        System.out.println("----------------------\n");
+                    } catch (Exception e) {
+                        System.out.println("Ошибка при обработке команды из скрипта: " + e.getMessage());
+                    }
+                }
             }
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
-            System.out.println("Ошибка при выполнении скрипта: " + e.getMessage());
+            System.out.println("Ошибка при чтении файла " + filename + ": " + e.getMessage());
+        } finally {
+            activeScripts.remove(filename);
         }
     }
 

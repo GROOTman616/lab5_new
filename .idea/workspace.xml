@@ -10,11 +10,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4faa096b-edc4-4c02-96af-04afbb0ddc4b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/lab5_new_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/lab5_new_jar.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/artifacts/lab5_new_jar2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/lab5_new_jar2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Server/Server2.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/META-INF/MANIFEST.MF" beforeDir="false" afterPath="$PROJECT_DIR$/META-INF/MANIFEST.MF" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Client/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Client/Client.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Server/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Server/RunServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Server/RunServer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,7 +80,7 @@
   }
 }]]></component>
   <component name="RunManager">
-    <configuration name="RunClient" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="RunClient" type="Application" factoryName="Application" singleton="false" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Client.RunClient" />
       <module name="Lab6" />
       <extension name="coverage">

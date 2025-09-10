@@ -1,7 +1,7 @@
 //import Managers.CollectionManager;
 ////C:\Users\rutma\OneDrive\Рабочий стол\Test1.csv
-////        execute_script C:\Users\rutma\test3.txt
-//import Managers.CommandManager;
+////
+//import Managers.CommandManager;execute_script C:\Users\rutma\test3.txt
 //import Managers.InputHelper0;
 //
 //import java.io.IOException;
