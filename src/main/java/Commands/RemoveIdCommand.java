@@ -1,6 +1,7 @@
 package Commands;
 
 import Common.CommandResponse;
+import Common.User;
 import Managers.CollectionManager;
 
 import java.util.Scanner;
@@ -12,13 +13,13 @@ public class RemoveIdCommand implements Command{
         this.collectionManager=collectionManager;
     }
     @Override
-    public CommandResponse execute(Object[] args, Object data, Scanner scanner) {
+    public CommandResponse execute(Object[] args, Object data, User user) {
         if (args.length<1) {
             return new CommandResponse(false, "Укажите id элемента");
         }
         try {
             Long id = Long.parseLong((String) args[0]);
-            String result = collectionManager.removeID(id);
+            String result = collectionManager.removeID(id, user);
             return new CommandResponse(true, result);
         } catch (NumberFormatException e) {
             return new CommandResponse(true, "Неверный формат id");

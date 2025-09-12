@@ -4,102 +4,140 @@ import Commands.Command;
 import Commands.SaveCommand;
 import Common.CommandRequest;
 import Common.CommandResponse;
+import Common.User;
+import DataBase.DBManager;
 import Managers.CollectionManager;
 import Managers.CommandManager;
 
 import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-import java.util.Scanner;
+import java.nio.channels.*;
+import java.security.MessageDigest;
+import java.util.*;
+import java.util.concurrent.*;
 
 public class Server {
+    private final DBManager dbManager;
     private final int port;
-    private String filename;
-    private final Scanner sc = new Scanner(System.in);
     private final CollectionManager collectionManager;
     private final CommandManager commandManager;
 
-    public Server(int port, String filename) throws IOException {
-        this.filename = filename;
+    private final ForkJoinPool readPool = new ForkJoinPool();
+    private final ExecutorService processPool = Executors.newCachedThreadPool();
+
+    public Server(int port) throws IOException {
         this.port = port;
-        this.collectionManager = new CollectionManager(filename);
-        this.commandManager = new CommandManager(collectionManager);
+        this.dbManager= new DBManager("jdbc:postgresql://localhost:5432/studs", "user", "password");
+        this.collectionManager = new CollectionManager(dbManager.loadFlats());
     }
+
     public void run() throws IOException {
-        try (ServerSocket serverSocket = new ServerSocket(port)) {
-            System.out.println("Сервер запущен на порту " + port);
+        Selector selector = Selector.open();
+        ServerSocketChannel serverChannel = ServerSocketChannel.open();
+        serverChannel.bind(new InetSocketAddress(port));
+        serverChannel.configureBlocking(false);
+        serverChannel.register(selector, SelectionKey.OP_ACCEPT);
 
-            while (true) {
-                try (Socket client = acceptClient(serverSocket)) {
-                    handleClient(client);
-                } catch (IOException e) {
-                    System.out.println("Ошибка соединения с клиентом: " + e.getMessage());
+        System.out.println("Сервер запущен на порту " + port);
+
+        while (true) {
+            selector.select();
+            Iterator<SelectionKey> keyIterator = selector.selectedKeys().iterator();
+
+            while (keyIterator.hasNext()) {
+                SelectionKey key = keyIterator.next();
+                keyIterator.remove();
+
+                if (key.isAcceptable()) {
+                    acceptClient(serverChannel, selector);
+                } else if (key.isReadable()) {
+                    readPool.submit(() -> handleClientRequest(key));
                 }
             }
-        } catch (IOException e) {
-            System.out.println("Ошибка сервера: " + e.getMessage());
         }
     }
 
-    private Socket acceptClient(ServerSocket serverSocket) throws IOException {
-        Socket client = serverSocket.accept();
-        System.out.println("Клиент подключился: " + client.getInetAddress());
-        return client;
+    private void acceptClient(ServerSocketChannel serverChannel, Selector selector) throws IOException {
+        SocketChannel clientChannel = serverChannel.accept();
+        clientChannel.configureBlocking(false);
+        clientChannel.register(selector, SelectionKey.OP_READ, ByteBuffer.allocate(4096));
+        System.out.println("Клиент подключился: " + clientChannel.getRemoteAddress());
     }
 
-    private void handleClient(Socket client) {
-        try (InputStream in = client.getInputStream();
-        OutputStream out = client.getOutputStream()) {
-            while (true) {
-                CommandRequest request = readRequest(in);
-                if (request == null) {
-                    System.out.println("Клиент отключился");
-                    save();
-                    break;
-                }
-                CommandResponse response = processRequest(request);
-                sendResponse(out, response);
-            }
-        } catch (IOException e) {
-            System.out.println("Ошибка при обработке клиента: " + e.getMessage());
-        }
-    }
+    private void handleClientRequest(SelectionKey key) {
+        SocketChannel clientChannel = (SocketChannel) key.channel();
+        ByteBuffer buffer = (ByteBuffer) key.attachment();
 
-    private CommandRequest readRequest(InputStream in) {
         try {
-            byte[] lenBytes = in.readNBytes(4);
-            if (lenBytes.length < 4) {
-                return null;
+            int bytesRead = clientChannel.read(buffer);
+            if (bytesRead == -1) {
+                System.out.println("Клиент отключился: " + clientChannel.getRemoteAddress());
+                save();
+                clientChannel.close();
+                return;
             }
-            int length = ByteBuffer.wrap(lenBytes).getInt();
-            byte[] data = in.readNBytes(length);
-            if (data.length < length) {
-                return null;
+
+            buffer.flip();
+            if (buffer.remaining() < 4) {
+                buffer.compact();
+                return;
             }
+
+            buffer.mark();
+            int length = buffer.getInt();
+
+            if (buffer.remaining() < length) {
+                buffer.reset();
+                buffer.compact();
+                return;
+            }
+
+            byte[] data = new byte[length];
+            buffer.get(data);
+            buffer.compact();
+
+            CommandRequest request;
             try (ObjectInputStream objIn = new ObjectInputStream(new ByteArrayInputStream(data))) {
-                return (CommandRequest) objIn.readObject();
+                request = (CommandRequest) objIn.readObject();
             }
+
+            processPool.submit(() -> {
+                try {
+                    CommandResponse response = processRequest(request);
+                    new Thread(() -> sendResponse(clientChannel, response)).start();
+                } catch (Exception e) {
+                    System.out.println("Ошибка обработки команды: " + e.getMessage());
+                }
+            });
+
         } catch (Exception e) {
-            System.out.println("Ошибка при чтении запроса: " + e.getMessage());
-            return null;
+            try {
+                System.out.println("Ошибка при обработке клиента: " + e.getMessage());
+                clientChannel.close();
+            } catch (IOException ignored) {}
         }
     }
 
     private CommandResponse processRequest(CommandRequest request) throws IOException {
+        User user = request.getUser();
+        if (user == null || !(user)) {
+            return new CommandResponse(false, "Ошибка авторизации. Проверьте логин и пароль.");
+        }
+
         String commandName = request.getCommandName();
         Object[] commandArgs = request.getArgs();
         Object dataObj = request.getData();
+
         Command command = commandManager.getCommands().get(commandName);
 
-        if (command==null) {
+        if (command == null) {
             return new CommandResponse(false, "Неизвестная команда: " + commandName);
-        } else {
-            return command.execute(commandArgs, dataObj, sc);
         }
+        return command.execute(commandArgs, dataObj, user);
     }
 
-    private void sendResponse(OutputStream out, CommandResponse response) {
+    private void sendResponse(SocketChannel clientChannel, CommandResponse response) {
         try {
             ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
             try (ObjectOutputStream objOut = new ObjectOutputStream(byteOut)) {
@@ -107,17 +145,35 @@ public class Server {
                 objOut.flush();
             }
             byte[] respData = byteOut.toByteArray();
-            ByteBuffer buffer = ByteBuffer.allocate(4+respData.length);
-            buffer.putInt(respData.length);
-            buffer.put(respData);
-            out.write(buffer.array());
-            out.flush();
+
+            ByteBuffer outBuffer = ByteBuffer.allocate(4 + respData.length);
+            outBuffer.putInt(respData.length);
+            outBuffer.put(respData);
+            outBuffer.flip();
+
+            clientChannel.write(outBuffer);
         } catch (IOException e) {
-            System.out.println("Ошибка при отправке ответа: " + e.getMessage());
+            System.out.println("Ошибка при отправке ответа клиенту: " + e.getMessage());
         }
     }
+
     private void save() throws IOException {
         SaveCommand command = new SaveCommand(collectionManager);
-        CommandResponse response = command.execute(null, null, sc);
+        command.execute(null, null, null);
+    }
+
+    // Утилита для хэширования паролей
+    public static String hashPassword(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-224");
+            byte[] hash = digest.digest(password.getBytes());
+            StringBuilder sb = new StringBuilder();
+            for (byte b : hash) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (Exception e) {
+            throw new RuntimeException("Ошибка при хэшировании пароля", e);
+        }
     }
 }

@@ -1,12 +1,13 @@
 package Commands;
 
 import Common.CommandResponse;
+import Common.User;
 
 import java.util.Scanner;
 
 public class ExitCommand implements Command{
     @Override
-    public CommandResponse execute(Object[] args, Object data, Scanner scanner) {
+    public CommandResponse execute(Object[] args, Object data, User user) {
         return new CommandResponse(true, "Завершение программы...");
     }
 

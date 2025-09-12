@@ -1,6 +1,7 @@
 package Commands;
 
 import Common.CommandResponse;
+import Common.User;
 import Managers.CollectionManager;
 
 import java.util.Scanner;
@@ -12,7 +13,7 @@ public class ShowCommand implements Command{
         this.collectionManager=collectionManager;
     }
     @Override
-    public CommandResponse execute(Object[] args, Object data, Scanner scanner) {
+    public CommandResponse execute(Object[] args, Object data, User user) {
         String collection = collectionManager.show();
         return new CommandResponse(true, collection);
     }

@@ -1,6 +1,7 @@
 package Commands;
 
 import Common.CommandResponse;
+import Common.User;
 import Managers.CommandManager;
 
 import java.io.IOException;
@@ -14,7 +15,7 @@ public class HelpCommand implements Command{
         this.commandManager=commandManager;
     }
     @Override
-    public CommandResponse execute(Object[] args, Object data, Scanner scanner) throws IOException {
+    public CommandResponse execute(Object[] args, Object data, User user) throws IOException {
         HashMap<String, Command> commands = commandManager.getCommands();
         String response = "";
         for (Command command : commands.values()) {

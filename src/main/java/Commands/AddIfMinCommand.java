@@ -1,6 +1,7 @@
 package Commands;
 
 import Common.CommandResponse;
+import Common.User;
 import Data.Flat;
 import Managers.CollectionManager;
 import Managers.InputHelper0;
@@ -16,9 +17,9 @@ public class AddIfMinCommand implements Command{
         this.inputHelper0=inputHelper0;
     }
     @Override
-    public CommandResponse execute(Object[] args, Object data, Scanner scanner) {
+    public CommandResponse execute(Object[] args, Object data, User user) {
         Flat flat = (Flat) data;
-        String result = collectionManager.addIfMin(flat);
+        String result = collectionManager.addIfMin(flat, user);
         return new CommandResponse(true, result);
     }
 

@@ -1,6 +1,7 @@
 package Managers;
 
 import Commands.*;
+import Common.User;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -77,12 +78,12 @@ public class CommandManager implements Serializable {
     }
     public HashMap<String, Command> getCommandsWithFlat() {return commandsWithFlat;}
 
-    public void executeCommand(String input, Object data, Scanner scanner) throws IOException {
+    public void executeCommand(String input, Object data, User user) throws IOException {
         String[] parts = input.trim().split(" ");
         String commandName = parts[0];
         Command command = commands.get(commandName);
         if (command!=null){
-            command.execute(parts, data, scanner);
+            command.execute(parts, data, user);
         } else {
             System.err.println("Неизвестная команда: " + commandName);
         }

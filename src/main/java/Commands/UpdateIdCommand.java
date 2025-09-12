@@ -1,6 +1,7 @@
 package Commands;
 
 import Common.CommandResponse;
+import Common.User;
 import Data.Flat;
 import Managers.CollectionManager;
 import Managers.InputHelper0;
@@ -14,14 +15,14 @@ public class UpdateIdCommand implements Command{
         this.collectionManager = collectionManager;
     }
     @Override
-    public CommandResponse execute(Object[] args, Object data, Scanner scanner) {
+    public CommandResponse execute(Object[] args, Object data, User user) {
         if (args.length<1) {
             return new CommandResponse(false, "Укажите id элемента");
         }
         try {
             Long id = Long.parseLong((String) args[0]);
             Flat flat = (Flat) data;
-            String result = collectionManager.updateID(id, flat);
+            String result = collectionManager.updateID(id, flat, user);
             return new CommandResponse(true, result);
         } catch (NumberFormatException e){
             return new CommandResponse(false, "Неверный формат id");

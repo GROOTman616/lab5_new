@@ -1,7 +1,9 @@
 package Managers;
 
+import Common.User;
 import Data.Flat;
 import Data.Transport;
+import DataBase.DBManager;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -10,28 +12,33 @@ import java.util.*;
 
 public class CollectionManager implements Serializable {
     private final ZonedDateTime initTime;
-    public String filename;
-    FileManager fmanager = new FileManager();
+    private final DBManager dbManager;
     public PriorityQueue<Flat> flats;
 
-    public CollectionManager(String filename) throws IOException {
-        this.filename = filename;
+    public CollectionManager(DBManager dbManager) throws IOException {
+        this.dbManager = dbManager;
         this.initTime = ZonedDateTime.now();
-        this.flats = fmanager.readFromCsv(filename);
+        this.flats = dbManager.loadFlats();
     }
 
-    public void addFlat(Flat flat) {
-        flats.add(flat);
+    public String addFlat(Flat flat, User user) {
+        long id = dbManager.insertFlat(flat, user);
+        if (id > 0) {
+            flat.setId(id);
+            flats.add(flat);
+            return "Квартира успешно добавлена (id=" + id + ")";
+        }
+        return "Ошибка при добавлении квартиры";
     }
 
     public String show() {
-        if (flats.isEmpty()){
+        if (flats.isEmpty()) {
             return "Коллекция пуста";
         }
         return flats.stream()
                 .sorted(Comparator.comparing(Flat::getId))
                 .map(Flat::toString)
-                .reduce("", (a, b) -> a+b + "\n");
+                .reduce("", (a, b) -> a + b + "\n");
     }
 
     public String info() {
@@ -39,70 +46,52 @@ public class CollectionManager implements Serializable {
         return info;
     }
 
-    public String removeHead() {
-        Flat head = flats.poll();
-        String result = "Удалён: " + head;
-        return result;
+    public String removeHead(User user) {
+        Flat head = flats.peek();
+        if (head == null) return "Коллекция пуста";
+        if (dbManager.removeFlatById(head.getId(), user)) {
+            flats.poll();
+            return "Удалён: " + head;
+        }
+        return "Ошибка: нельзя удалить чужую квартиру";
     }
 
-    public String clear() {
-        flats.clear();
-        String result = "Коллекция очищена";
-        return result;
+    public String clear(User user) {
+        if (dbManager.clearFlats(user)) {
+            flats.removeIf(f -> dbManager.isFlatOwnedByUser(f.getId(), user));
+            return "Коллекция очищена";
+        }
+        return "Ошибка при очистке коллекции";
     }
 
-    public String updateID(long id, Flat newFlat) {
-        Flat oldFlat = null;
-        String message;
-        for(Flat f: flats) {
-            if (f.getId()==id) {
-                oldFlat = f;
-                break;
-            }
-        }
-        if (oldFlat==null) {
-            message = "Элемент c таким id не найден";
-            return message;
-        }
-        else {
-            flats.remove(oldFlat);
+    public String updateID(long id, Flat newFlat, User user) {
+        if (dbManager.updateFlat(id, newFlat, user)) {
+            flats.removeIf(f -> f.getId() == id);
             newFlat.setId(id);
             flats.add(newFlat);
-            message = "Элемент обновлён";
-            return message;
+            return "Элемент обновлён";
         }
+        return "Элемент с таким id не найден или не принадлежит вам";
     }
 
-    public String removeID(long id) {
-        Flat oldFlat = null;
-        for(Flat f: flats) {
-            if (f.getId()==id) {
-                oldFlat = f;
-                break;
-            }
-        }
-        if (oldFlat==null) {
-            return "Элемент не найден";
-        }
-        else {
-            flats.remove(oldFlat);
+    public String removeID(long id, User user) {
+        if (dbManager.removeFlatById(id, user)) {
+            flats.removeIf(f->f.getId()==id);
             return "Элемент удалён";
         }
+        return "Элемент не найден или не принадлежит вам";
     }
-    public String removeByNumberOfRooms(Long numberOfRooms) {
-        Iterator<Flat> iterator = flats.iterator();
-        String result = "";
-        while (iterator.hasNext()) {
-            Flat f = iterator.next();
-            if (f.getNumberOfRooms()==numberOfRooms) {
-                iterator.remove();
-                result += "Удалён: "+ f + "\n";
+    public String removeByNumberOfRooms(Long numberOfRooms, User user) {
+        StringBuilder result = new StringBuilder();
+        for (Flat f : new ArrayList<>(flats)) {
+            if (f.getNumberOfRooms().equals(numberOfRooms)) {
+                if (dbManager.removeFlatById(f.getId(), user)) {
+                    flats.remove(f);
+                    result.append("Удалён: ").append(f).append("\n");
+                }
             }
         }
-        if (result.equals("")) {
-            return "Квартир с таким количеством комнат нет";
-        }
-        return result;
+        return result.isEmpty() ? "Квартир с таким количеством комнат нет" : result.toString();
     }
 
     public PriorityQueue<Flat> priceFilter(Integer price){
@@ -126,13 +115,11 @@ public class CollectionManager implements Serializable {
         return result;
     }
 
-    public String addIfMax(Flat flat) {
+    public String addIfMax(Flat flat, User user) {
         Flat maxflat = Collections.max(flats);
         String result;
         if (flat.compareTo(maxflat)>0) {
-            flats.add(flat);
-            result = "Объект успешно добавлен";
-            return result;
+            return addFlat(flat, user);
         }
         else {
             flat.fixId();
@@ -141,13 +128,11 @@ public class CollectionManager implements Serializable {
         }
     }
 
-    public String addIfMin(Flat flat) {
+    public String addIfMin(Flat flat, User user) {
         Flat minflat = Collections.min(flats);
         String result;
         if (flat.compareTo(minflat)<0) {
-            flats.add(flat);
-            result = "Объект успешно добавлен";
-            return result;
+            return addFlat(flat, user);
         }
         else {
             flat.fixId();
@@ -156,11 +141,8 @@ public class CollectionManager implements Serializable {
         }
     }
 
-    public PriorityQueue<Flat> getCollection(){
+    public PriorityQueue<Flat> getCollection() {
         return flats;
-    }
-    public String getFilename() {
-        return filename;
     }
 }
 

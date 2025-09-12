@@ -1,6 +1,7 @@
 package Commands;
 
 import Common.CommandResponse;
+import Common.User;
 import Managers.CollectionManager;
 
 import java.util.Scanner;
@@ -13,8 +14,8 @@ public class RemoveHeadCommand implements Command{
     }
 
     @Override
-    public CommandResponse execute(Object[] args, Object data, Scanner scanner) {
-        String message = collectionManager.removeHead();
+    public CommandResponse execute(Object[] args, Object data, User user) {
+        String message = collectionManager.removeHead(user);
         return new CommandResponse(true, message);
     }
 

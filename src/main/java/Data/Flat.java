@@ -94,4 +94,6 @@ public class Flat implements Comparable<Flat>, Serializable {
     public House getHouse() {
         return house;
     }
+
+    public java.time.ZonedDateTime getCreationDate() { return creationDate; }
 }

@@ -10,7 +10,7 @@ public class RunServer {
         System.out.print("Введите имя файла: ");
         String filename = sc.nextLine();
         try {
-            Server2 server = new Server2(port, filename);
+            Server2 server = new Server2(port)
             server.run();
         } catch (Exception e) {
             System.out.println("Ошибка при запуске сервера: " + e.getMessage());

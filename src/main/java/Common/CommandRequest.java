@@ -8,6 +8,7 @@ public class CommandRequest implements Serializable {
     private String commandName;
     private Object[] args;
     private Object data;
+    private User user;
 
     public CommandRequest(String commandName, Object[] args, Object data) {
         this.commandName = commandName;
@@ -25,5 +26,9 @@ public class CommandRequest implements Serializable {
 
     public Object getData() {
         return data;
+    }
+
+    public User getUser() {
+        return user;
     }
 }
