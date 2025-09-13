@@ -10,30 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4faa096b-edc4-4c02-96af-04afbb0ddc4b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Common/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/DataBase/DBConnector.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/DataBase/DBManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/AddCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/AddCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/AddIfMaxCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/AddIfMaxCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/AddIfMinCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/AddIfMinCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/ClearCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/ClearCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/Command.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/Command.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/ExitCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/ExitCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/HelpCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/HelpCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/RemoveByNumberOfRoomsCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/RemoveByNumberOfRoomsCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/RemoveHeadCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/RemoveHeadCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/RemoveIdCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/RemoveIdCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/SaveCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/SaveCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/ShowCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/ShowCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Commands/UpdateIdCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Commands/UpdateIdCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Common/CommandRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Common/CommandRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Data/Flat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Data/Flat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Managers/CollectionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/CollectionManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Managers/CommandManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Managers/CommandManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Server/RunServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Server/RunServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Server/Server.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Server/Server2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Server/Server2.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

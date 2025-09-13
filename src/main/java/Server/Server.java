@@ -26,10 +26,11 @@ public class Server {
     private final ForkJoinPool readPool = new ForkJoinPool();
     private final ExecutorService processPool = Executors.newCachedThreadPool();
 
-    public Server(int port) throws IOException {
+    public Server(int port, DBManager dbManager) throws IOException {
         this.port = port;
-        this.dbManager= new DBManager("jdbc:postgresql://localhost:5432/studs", "user", "password");
-        this.collectionManager = new CollectionManager(dbManager.loadFlats());
+        this.dbManager = dbManager;
+        this.collectionManager = new CollectionManager(dbManager);
+        this.commandManager=new CommandManager(collectionManager);
     }
 
     public void run() throws IOException {
@@ -121,7 +122,7 @@ public class Server {
 
     private CommandResponse processRequest(CommandRequest request) throws IOException {
         User user = request.getUser();
-        if (user == null || !(user)) {
+        if (user == null || !dbManager.checkPassword(user.getLogin(), user.getPassword())) {
             return new CommandResponse(false, "Ошибка авторизации. Проверьте логин и пароль.");
         }
 
