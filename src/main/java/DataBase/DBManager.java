@@ -6,8 +6,6 @@ import Server.Server;
 
 import java.sql.*;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.PriorityQueue;
 
 public class DBManager {
@@ -17,7 +15,6 @@ public class DBManager {
         this.connection = connection;
     }
 
-    // ---------- Пользователи ----------
     public boolean userExists(String login) {
         try (PreparedStatement statement = connection.prepareStatement(
                 "SELECT 1 FROM users WHERE login = ?")) {
@@ -90,20 +87,16 @@ public class DBManager {
         return null;
     }
 
-    // ---------- Квартиры ----------
     public long insertFlat(Flat flat, User user) {
         try {
             if (!checkUser(user)) return -1;
 
             int userId = getUserId(user.getLogin());
 
-            // Coordinates
             long coordinatesId = insertCoordinates(flat.getCoordinates());
 
-            // House
             long houseId = insertHouse(flat.getHouse());
 
-            // Flat
             try (PreparedStatement statement = connection.prepareStatement(
                     "INSERT INTO flats (name, coordinates_id, creation_date, area, number_of_rooms, price, view, transport, house_id, user_id) " +
                             "VALUES (?, ?, ?, ?, ?, ?, ?::view, ?::transport, ?, ?) RETURNING id",

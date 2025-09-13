@@ -118,6 +118,9 @@ public class CollectionManager implements Serializable {
     public String addIfMax(Flat flat, User user) {
         Flat maxflat = Collections.max(flats);
         String result;
+        if (flats.isEmpty()) {
+            return addFlat(flat, user);
+        }
         if (flat.compareTo(maxflat)>0) {
             return addFlat(flat, user);
         }

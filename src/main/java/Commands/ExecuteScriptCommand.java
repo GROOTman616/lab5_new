@@ -1,6 +1,7 @@
 package Commands;
 
 import Common.CommandResponse;
+import Common.User;
 import Managers.CommandManager;
 
 import java.io.File;
@@ -17,7 +18,7 @@ public class ExecuteScriptCommand implements Command{
     }
     ArrayList<String> scripts= new ArrayList<>();
     @Override
-    public CommandResponse execute(Object[] args, Object data, Scanner scanner) throws IOException {
+    public CommandResponse execute(Object[] args, Object data, User user) throws IOException {
         if (args.length < 1) {
             return new CommandResponse(false, "Укажите имя скрипта");
         }
@@ -37,7 +38,7 @@ public class ExecuteScriptCommand implements Command{
                     }
                     scripts.add(commandArgs[0]);
                 }
-                commandManager.executeCommand(line, data, scanner);
+                commandManager.executeCommand(line, data, user);
             }
             return new CommandResponse(true, "Скрипт выполнен");
         } catch (FileNotFoundException e) {

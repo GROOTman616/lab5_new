@@ -2,6 +2,7 @@ package Client;
 
 import Common.CommandRequest;
 import Common.CommandResponse;
+import Common.User;
 import Managers.CommandManager;
 import Managers.InputHelper0;
 
@@ -20,13 +21,20 @@ public class Client {
     int port;
     private ByteBuffer buffer = ByteBuffer.allocate(8);
     private final Set<String> activeScripts = new HashSet<>();
+    private User user;
 
-    public Client(int port) throws IOException {
+    public Client(int port) {
         this.port = port;
     }
 
     public void run() {
         String host = "localhost";
+
+        System.out.print("Введите логин: ");
+        String login = scanner.nextLine().trim();
+        System.out.print("Введите пароль: ");
+        String password = scanner.nextLine().trim();
+        user = new User (login, password);
         while (true) {
             try (SocketChannel socketChannel = SocketChannel.open()) {
                 socketChannel.connect(new InetSocketAddress(host, port));
@@ -54,9 +62,9 @@ public class Client {
                             CommandRequest request;
                             if (commandManager.getCommandsWithFlat().containsKey(commandName)) {
                                 Object flat = inputHelper0.readFlat();
-                                request = new CommandRequest(commandName, commandArgs, flat);
+                                request = new CommandRequest(commandName, commandArgs, flat, user);
                             } else {
-                                request = new CommandRequest(commandName, commandArgs, null);
+                                request = new CommandRequest(commandName, commandArgs, null, user);
                             }
                             sendRequest(socketChannel, request);
 
@@ -114,9 +122,9 @@ public class Client {
                         CommandRequest request;
                         if (commandManager.getCommandsWithFlat().containsKey(commandName)) {
                             Object flat = inputHelper0.readFlat();
-                            request = new CommandRequest(commandName, commandArgs, flat);
+                            request = new CommandRequest(commandName, commandArgs, flat, user);
                         } else {
-                            request = new CommandRequest(commandName, commandArgs, null);
+                            request = new CommandRequest(commandName, commandArgs, null, user);
                         }
 
                         sendRequest(socketChannel, request);

@@ -1,5 +1,6 @@
 package Commands;
 import Common.CommandResponse;
+import Common.User;
 import Managers.CollectionManager;
 
 import java.io.Serializable;
@@ -13,7 +14,7 @@ public class InfoCommand implements Command, Serializable {
     }
 
     @Override
-    public CommandResponse execute(Object[] args, Object data, Scanner scanner) {
+    public CommandResponse execute(Object[] args, Object data, User user) {
         String info = collectionManager.info();
         return new CommandResponse(true, info);
     }

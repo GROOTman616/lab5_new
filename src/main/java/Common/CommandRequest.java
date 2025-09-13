@@ -10,10 +10,11 @@ public class CommandRequest implements Serializable {
     private Object data;
     private User user;
 
-    public CommandRequest(String commandName, Object[] args, Object data) {
+    public CommandRequest(String commandName, Object[] args, Object data, User user) {
         this.commandName = commandName;
         this.args = args;
         this.data=data;
+        this.user = user;
     }
 
     public String getCommandName(){

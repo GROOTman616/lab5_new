@@ -1,6 +1,7 @@
 package Commands;
 
 import Common.CommandResponse;
+import Common.User;
 import Managers.CollectionManager;
 
 import java.util.Scanner;
@@ -13,7 +14,7 @@ public class PrintFieldAscendingTransportCommand implements Command{
     }
 
     @Override
-    public CommandResponse execute(Object[] args, Object data, Scanner scanner) {
+    public CommandResponse execute(Object[] args, Object data, User user) {
         String result = collectionManager.transportOut();
         return new CommandResponse(true, result);
     }

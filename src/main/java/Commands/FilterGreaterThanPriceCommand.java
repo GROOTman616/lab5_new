@@ -1,6 +1,7 @@
 package Commands;
 
 import Common.CommandResponse;
+import Common.User;
 import Data.Flat;
 import Managers.CollectionManager;
 
@@ -15,7 +16,7 @@ public class FilterGreaterThanPriceCommand implements Command{
         this.collectionManager=collectionManager;
     }
     @Override
-    public CommandResponse execute(Object[] args, Object data, Scanner scanner) {
+    public CommandResponse execute(Object[] args, Object data, User user) {
         if (args.length < 1) {
             String message = "Укажите цену";
             return new CommandResponse (false, message);

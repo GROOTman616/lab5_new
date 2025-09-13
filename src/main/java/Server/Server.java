@@ -1,7 +1,6 @@
 package Server;
 
 import Commands.Command;
-import Commands.SaveCommand;
 import Common.CommandRequest;
 import Common.CommandResponse;
 import Common.User;
@@ -73,9 +72,7 @@ public class Server {
         try {
             int bytesRead = clientChannel.read(buffer);
             if (bytesRead == -1) {
-                System.out.println("Клиент отключился: " + clientChannel.getRemoteAddress());
-                save();
-                clientChannel.close();
+                disconnectClient(key, clientChannel, "Клиент отключился");
                 return;
             }
 
@@ -105,18 +102,18 @@ public class Server {
 
             processPool.submit(() -> {
                 try {
-                    CommandResponse response = processRequest(request);
-                    new Thread(() -> sendResponse(clientChannel, response)).start();
+                    CommandResponse response;
+                    synchronized (collectionManager) {
+                        response = processRequest(request);
+                    }
+                    processPool.submit(() -> sendResponse(clientChannel, response));
                 } catch (Exception e) {
                     System.out.println("Ошибка обработки команды: " + e.getMessage());
                 }
             });
 
         } catch (Exception e) {
-            try {
-                System.out.println("Ошибка при обработке клиента: " + e.getMessage());
-                clientChannel.close();
-            } catch (IOException ignored) {}
+            disconnectClient(key, clientChannel, "Ошибка при обработке клиента: " + e.getMessage());
         }
     }
 
@@ -158,12 +155,18 @@ public class Server {
         }
     }
 
-    private void save() throws IOException {
-        SaveCommand command = new SaveCommand(collectionManager);
-        command.execute(null, null, null);
+    private void disconnectClient(SelectionKey key, SocketChannel channel, String message) {
+        try {
+            System.out.println("Отключение клиента." + message + ":" + channel.getRemoteAddress());
+            key.cancel();
+            channel.close();
+        } catch (IOException ignored) {}
     }
 
-    // Утилита для хэширования паролей
+//    private void save() throws IOException {
+//        SaveCommand command = new SaveCommand(collectionManager);
+//        command.execute(null, null, null);
+//    }
     public static String hashPassword(String password) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-224");
